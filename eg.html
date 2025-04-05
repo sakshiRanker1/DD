@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Pop & Love Message</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffafbd, #ffc3a0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 22px;
+      border: none;
+      border-radius: 12px;
+      background-color: #ff4b5c;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
+    }
+
+    #tapMessage {
+      font-weight: bold;
+      color: #0d6efd;
+      margin-top: 10px;
+      font-size: 20px;
+      display: none;
+    }
+
+    #checkboxContainer {
+      display: none;
+      margin-top: 10px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      animation: float 4s ease-out forwards;
+    }
+
+    .heart::before, .heart::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { top: 0; left: -10px; }
+
+    @keyframes float {
+      0% { opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -300%) rotate(45deg) scale(1.5); }
+    }
+
+    #messageContainer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      color: #ffebeb;
+      font-size: 20px;
+      text-align: center;
+      padding: 40px 20px;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    #messageContainer.show { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 600px) {
+      #messageContainer { font-size: 18px; }
+      button { font-size: 18px; padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <button id="heartButton" onclick="startExperience()">Click Me 💕</button>
+  <div id="tapMessage">Tap to get a special note 💌</div>
+  <div id="checkboxContainer">
+    <input type="checkbox" id="showMessage" onchange="toggleMessage()" />
+    <label for="showMessage">view</label>
+  </div>
+
+  <div id="messageContainer">
+    <div>
+      <p>Hey you,</p>
+      <p>I don’t know how you did it, but your smile is now my favorite part of the day.</p>
+      <p>Even in this short time, you’ve made my heart feel things it forgot it could.</p>
+      <p>I catch myself smiling at random, thinking of your voice, your vibe, your little quirks.</p>
+      <p>It’s like you walked into my life quietly... and suddenly, nothing feels the same.</p>
+      <p>I don’t know where this will go—but with you, even the unknown feels exciting.</p>
+      <p>Just wanted you to know… you're already kinda special to me. 💖</p>
+    </div>
+  </div>
+
+  <audio id="bgMusic" preload="auto">
+    <source src="Muskurahat.mp3" type="audio/mp3" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    function startExperience() {
+      createHearts();
+      document.getElementById('tapMessage').style.display = 'block';
+      document.getElementById('checkboxContainer').style.display = 'flex';
+
+      const music = document.getElementById("bgMusic");
+      music.currentTime = 0;
+      music.volume = 0.7;
+      music.play().catch((e) => {
+        alert("Please tap once more to allow music 🎵");
+        console.log("Playback error:", e);
+      });
+    }
+
+    function createHearts() {
+      for (let i = 0; i < 50; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = Math.random() * window.innerHeight + 'px';
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 4000);
+      }
+    }
+
+    function toggleMessage() {
+      const checkbox = document.getElementById('showMessage');
+      const message = document.getElementById('messageContainer');
+
+      if (checkbox.checked) {
+        message.classList.add('show');
+        document.getElementById('tapMessage').style.display = 'none';
+        document.getElementById('checkboxContainer').style.display = 'none';
+        document.getElementById('heartButton').style.display = 'none';
+      } else {
+        message.classList.remove('show');
+      }
+    }
+  </script>
+</body>
+</html>
